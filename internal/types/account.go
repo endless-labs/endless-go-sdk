@@ -2,12 +2,14 @@ package types
 
 import (
 	"encoding/hex"
-	"github.com/btcsuite/btcd/btcutil/base58"
 	"strings"
+
+	"github.com/btcsuite/btcd/btcutil/base58"
 
 	//"encoding/hex"
 	//"strings"
 	"errors"
+
 	"github.com/endless-labs/endless-go-sdk/crypto"
 )
 
@@ -32,8 +34,6 @@ func NewAccountFromSigner(signer crypto.Signer, authKey ...crypto.Authentication
 		// Throw error
 		return nil, errors.New("must only provide one auth key")
 	} else {
-		//log.Printf("out.Address[:] = %#v \n", out.Address[:])
-		//log.Printf("signer.AuthKey()[:]] = %#v \n", signer.AuthKey()[:])
 		copy(out.Address[:], signer.AuthKey()[:])
 	}
 
@@ -49,22 +49,12 @@ func NewEd25519Account() (*Account, error) {
 		return nil, err
 	}
 
-	//log.Printf("privateKey = %#v \n\n", privateKey)
-	//log.Printf("len(privateKey.Inner) = %#v \n\n",len(privateKey.Inner))
-
-	//log.Printf("privateKey.Inner.Seed() = %#v \n\n",privateKey.Inner.Seed())
-	//privateKeyHex := hex.EncodeToString(privateKey.Inner)
-	//log.Printf("privateKeyHex = %#v \n\n",privateKeyHex)
-
 	return NewAccountFromSigner(privateKey)
 }
 
 // NewEd25519SingleSignerAccount creates a new random Ed25519 account
 func NewEd25519SingleSignerAccount() (*Account, error) {
 	privateKey, err := crypto.GenerateEd25519PrivateKey()
-
-	//log.Printf("privateKey = %#v \n\n", privateKey)
-
 	if err != nil {
 		return nil, err
 	}

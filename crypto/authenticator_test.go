@@ -5,8 +5,6 @@ import (
 	"github.com/endless-labs/endless-go-sdk/bcs"
 	"github.com/endless-labs/endless-go-sdk/internal/util"
 	"github.com/stretchr/testify/assert"
-	"log"
-	"testing"
 )
 
 func TestAuthenticationKey_FromPublicKey(t *testing.T) {
@@ -87,13 +85,11 @@ func Test_InvalidAuthenticatorDeserialization(t *testing.T) {
 	serialized := []byte{0xFF}
 	newAuthenticator := &AccountAuthenticator{}
 	err := bcs.Deserialize(newAuthenticator, serialized)
-	log.Println("err 1 =", err)
 	assert.Error(t, err)
 
 	serialized = []byte{0x4F}
 	newAuthenticator = &AccountAuthenticator{}
 	err = bcs.Deserialize(newAuthenticator, serialized)
-	log.Println("err 2 =", err)
 	assert.Error(t, err)
 }
 

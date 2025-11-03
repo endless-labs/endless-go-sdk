@@ -3,6 +3,7 @@ package crypto
 import (
 	//"log"
 	"fmt"
+
 	"github.com/endless-labs/endless-go-sdk/bcs"
 	"github.com/endless-labs/endless-go-sdk/internal/util"
 )
@@ -51,9 +52,6 @@ func (ak *AuthenticationKey) FromPublicKey(publicKey PublicKey) {
 
 // FromBytesAndScheme derives the [AuthenticationKey] directly from the SHA3-256 hash of the combined array
 func (ak *AuthenticationKey) FromBytesAndScheme(bytes []byte, scheme DeriveScheme) {
-
-	//log.Printf("AuthenticationKey.FromBytesAndScheme bytes = %#v \n",bytes)
-	//log.Printf("AuthenticationKey.FromBytesAndScheme scheme = %#v \n",scheme)
 
 	authBytes := util.Sha3256Hash([][]byte{
 		bytes,

@@ -3,6 +3,7 @@ package endless
 import (
 	//"log"
 	"fmt"
+
 	"github.com/endless-labs/endless-go-sdk/bcs"
 	"github.com/endless-labs/endless-go-sdk/crypto"
 	"golang.org/x/crypto/sha3"
@@ -107,10 +108,6 @@ func (txn *RawTransaction) SigningMessage() (message []byte, err error) {
 		return
 	}
 	prehash := RawTransactionPrehash()
-
-	//log.Printf("prehash = %#v \n\n",prehash)
-	//log.Printf("txnBytes = %#v \n\n",txnBytes)
-
 	message = make([]byte, len(prehash)+len(txnBytes))
 	copy(message, prehash)
 	copy(message[len(prehash):], txnBytes)
@@ -123,9 +120,6 @@ func (txn *RawTransaction) SigningMessage() (message []byte, err error) {
 
 func (txn *RawTransaction) Sign(signer crypto.Signer) (authenticator *crypto.AccountAuthenticator, err error) {
 	message, err := txn.SigningMessage()
-
-	//log.Printf("RawTransaction Sign.msg = %x \n\n", message)
-
 	if err != nil {
 		return
 	}
@@ -235,9 +229,6 @@ func (txn *RawTransactionWithData) ToFeePayerSignedTransaction(
 
 func (txn *RawTransactionWithData) Sign(signer crypto.Signer) (authenticator *crypto.AccountAuthenticator, err error) {
 	message, err := txn.SigningMessage()
-
-	//log.Printf("RawTransactionWithData Sign() message = %#v \n\n",message)
-
 	if err != nil {
 		return
 	}
@@ -254,10 +245,6 @@ func (txn *RawTransactionWithData) SigningMessage() (message []byte, err error) 
 		return
 	}
 	prehash := RawTransactionWithDataPrehash()
-
-	//log.Printf("RawTransactionWithData SigningMessage() prehash = %#v \n\n",prehash)
-	//log.Printf("RawTransactionWithData SigningMessage() txnBytes = %#v \n\n",txnBytes)
-
 	message = make([]byte, len(prehash)+len(txnBytes))
 	copy(message, prehash)
 	copy(message[len(prehash):], txnBytes)

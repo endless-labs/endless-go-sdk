@@ -99,13 +99,7 @@ func (key *Ed25519PrivateKey) PubKey() PublicKey {
 //   - [Signer]
 func (key *Ed25519PrivateKey) AuthKey() *AuthenticationKey {
 	out := &AuthenticationKey{}
-
-	//log.Printf("key.PubKey() = %#v \n",key.PubKey())  //私钥的后面32位
-	//log.Printf("key.AuthKey() = %#v \n\n",key.AuthKey())
-
 	out.FromPublicKey(key.PubKey())
-
-	//log.Printf("通过PrivateKey的PubKey() 再末尾补0，Sha3256Hash 生成AuthenticationKey = %#v \n\n",out)
 	return out
 }
 
@@ -120,8 +114,6 @@ func (key *Ed25519PrivateKey) AuthKey() *AuthenticationKey {
 // Implements:
 //   - [MessageSigner]
 func (key *Ed25519PrivateKey) SignMessage(msg []byte) (sig Signature, err error) {
-	//log.Println(111111111)
-
 	sigBytes := ed25519.Sign(key.Inner, msg)
 	return &Ed25519Signature{Inner: [64]byte(sigBytes)}, nil
 }
@@ -162,9 +154,6 @@ func (key *Ed25519PrivateKey) Bytes() []byte {
 //   - [CryptoMaterial]
 func (key *Ed25519PrivateKey) FromBytes(bytes []byte) (err error) {
 	bytes, err = ParsePrivateKey(bytes, PrivateKeyVariantEd25519, false)
-
-	//log.Printf("Ed25519PrivateKey.FromBytes() bytes = %#v \n\n",bytes)
-
 	if err != nil {
 		return err
 	}
@@ -180,8 +169,6 @@ func (key *Ed25519PrivateKey) FromBytes(bytes []byte) (err error) {
 // Implements:
 //   - [CryptoMaterial]
 func (key *Ed25519PrivateKey) ToHex() string {
-	//log.Printf("Ed25519PrivateKey = %#v \n", *key)
-
 	return util.BytesToHex(key.Bytes())
 }
 
@@ -198,9 +185,6 @@ func (key *Ed25519PrivateKey) ToAIP80() (formattedString string, err error) {
 //   - [CryptoMaterial]
 func (key *Ed25519PrivateKey) FromHex(hexStr string) (err error) {
 	bytes, err := ParsePrivateKey(hexStr, PrivateKeyVariantEd25519)
-
-	//log.Printf("Ed25519PrivateKey.FromHex() bytes = %#v \n\n",bytes)
-
 	if err != nil {
 		return err
 	}

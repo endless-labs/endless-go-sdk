@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/btcsuite/btcd/btcutil/base58"
 	"io"
 	"log/slog"
 	"math/big"
@@ -15,6 +14,8 @@ import (
 	"sort"
 	"strconv"
 	"time"
+
+	"github.com/btcsuite/btcd/btcutil/base58"
 
 	"github.com/endless-labs/endless-go-sdk/api"
 	"github.com/endless-labs/endless-go-sdk/bcs"
@@ -118,11 +119,7 @@ func (rc *NodeClient) Account(address AccountAddress, ledgerVersion ...uint64) (
 		au.RawQuery = params.Encode()
 	}
 
-	//log.Printf("rc = %+v \n",rc)
-	//log.Printf("au.String() = %+v \n",au.String())
-
 	info, err = Get[AccountInfo](rc, au.String())
-
 	if err != nil {
 
 		//todo
@@ -1274,8 +1271,6 @@ func Post[T any](rc *NodeClient, postUrl string, contentType string, body io.Rea
 		return data, err
 	}
 	_ = response.Body.Close()
-
-	//log.Printf("Post string(blob)=%v \n",string(blob))
 
 	err = json.Unmarshal(blob, &data)
 	return data, err

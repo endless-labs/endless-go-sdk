@@ -2,6 +2,7 @@ package endless
 
 import (
 	"errors"
+
 	"github.com/btcsuite/btcd/btcutil/base58"
 	"github.com/endless-labs/endless-go-sdk/bcs"
 	"github.com/endless-labs/endless-go-sdk/crypto"
@@ -46,7 +47,30 @@ func (txn *SignedTransaction) Verify() error {
 				SecondarySigners: txn.Authenticator.Auth.(*MultiAgentTransactionAuthenticator).SecondarySignerAddresses,
 			},
 		}
+		bytes, err := bcs.Serialize(rawTransactionWithData)
+		if err != nil {
+			return err
+		}
 
+		message := make([]byte, len(prehash)+len(bytes))
+		copy(message, prehash)
+		copy(message[len(prehash):], bytes)
+
+		if txn.Authenticator.Verify(message) {
+			return nil
+		}
+		return errors.New("signature is invalid")
+	case *FeePayerTransactionAuthenticator:
+		prehash := RawTransactionWithDataPrehash()
+
+		rawTransactionWithData := &RawTransactionWithData{
+			Variant: MultiAgentWithFeePayerRawTransactionWithDataVariant,
+			Inner: &MultiAgentWithFeePayerRawTransactionWithData{
+				RawTxn:           txn.Transaction,
+				FeePayer:         txn.Authenticator.Auth.(*FeePayerTransactionAuthenticator).FeePayer,
+				SecondarySigners: txn.Authenticator.Auth.(*FeePayerTransactionAuthenticator).SecondarySignerAddresses,
+			},
+		}
 		bytes, err := bcs.Serialize(rawTransactionWithData)
 		if err != nil {
 			return err
@@ -62,9 +86,6 @@ func (txn *SignedTransaction) Verify() error {
 		return errors.New("signature is invalid")
 	default:
 		bytes, err := txn.Transaction.SigningMessage()
-
-		//log.Printf("SignedTransaction Verify.msg = %#v \n\n", bytes)
-
 		if err != nil {
 			return err
 		}
@@ -72,23 +93,6 @@ func (txn *SignedTransaction) Verify() error {
 			return nil
 		}
 		return errors.New("signature is invalid")
-
-		//log.Printf(
-		//	"SignedTransaction.Authenticator.Variant 	 txn.Authenticator.Auth = %#v \n\n",
-		//	txn.Authenticator.Variant,
-		//)
-		//
-		//log.Printf(
-		//	"SignedTransaction.Authenticator.Auth 	 txn.Authenticator.Auth = %#v \n\n",
-		//	txn.Authenticator.Auth,
-		//)
-
-		//log.Printf(
-		//	"SignedTransaction.Authenticator.Auth 	 txn.Authenticator.Auth.(*SingleSenderTransactionAuthenticator) = %#v \n\n",
-		//	txn.Authenticator.Auth.(*SingleSenderTransactionAuthenticator),
-		//)
-
-		//return errors.New("SignedTransaction.Authenticator.Auth error ")
 	}
 }
 

@@ -159,7 +159,7 @@ func (ea *AccountAuthenticator) FromKeyAndSignature(key PublicKey, sig Signature
 			return errors.New("invalid signature type for MultiKey")
 		}
 	default:
-		return errors.New("Invalid key type")
+		return errors.New("invalid key type")
 	}
 	return nil
 }

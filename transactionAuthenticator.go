@@ -184,13 +184,6 @@ type MultiAgentTransactionAuthenticator struct {
 func (ea *MultiAgentTransactionAuthenticator) Verify(msg []byte) bool {
 	sender := ea.Sender.Verify(msg)
 	if !sender {
-		//
-		//log.Printf("msg = %#v \n\n",msg)
-		//log.Printf("ea.Sender = %#v \n\n",ea.Sender)
-		//log.Printf("ea.Sender.Auth = %#v \n\n",ea.Sender.Auth)
-		//log.Printf("ea.Sender.Auth.(*crypto.Ed25519Authenticator).PubKey = %#v \n\n",ea.Sender.Auth.(*crypto.Ed25519Authenticator).PubKey)
-		//log.Printf("ea.Sender.Auth.(*crypto.Ed25519Authenticator).Sig = %#v \n\n",ea.Sender.Auth.(*crypto.Ed25519Authenticator).Sig)
-
 		return false
 	}
 	for _, sa := range ea.SecondarySigners {

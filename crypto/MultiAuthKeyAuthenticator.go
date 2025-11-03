@@ -23,13 +23,6 @@ func (ea *MultiAuthKeyAuthenticator) Verify(msg []byte) bool {
 
 	for i := 0; i < len(ea.PubKeys); i++ {
 		if !ea.PubKeys[i].Verify(msg, ea.Signatures[i].Signature) {
-			//log.Println("MultiAuthKeyAuthenticator  	i = ", i)
-			//
-			//log.Printf("MultiAuthKeyAuthenticator  	ea.PubKeys[i].PubKey = %#v \n\n", ea.PubKeys[i].PubKey)
-			//log.Printf("MultiAuthKeyAuthenticator  	ea.Signatures[i].Signature = %#v \n\n", ea.Signatures[i].Signature)
-			//
-			//log.Printf("MultiAuthKeyAuthenticator  	ea.PubKeys[i] = %#v \n\n", ea.PubKeys[i])
-
 			return false
 		}
 	}

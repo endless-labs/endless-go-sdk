@@ -347,7 +347,6 @@ func TestTransaction_PendingTransaction(t *testing.T) {
 	// Pending isn't committed
 	data2 := &CommittedTransaction{}
 	err = json.Unmarshal([]byte(testJson), &data2)
-	log.Println("err =", err)
 	assert.Error(t, err)
 
 	txn, err := data.PendingTransaction()

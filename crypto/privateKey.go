@@ -74,8 +74,6 @@ func ParsePrivateKey(value any, keyType PrivateKeyVariant, strict ...bool) (byte
 				return nil, err
 			}
 
-			//log.Printf("bytes = %#v \n\n",bytes)
-
 			// If strictness is not explicitly false, warn about non-AIP-80 compliance
 			if strictness == nil {
 				//fmt.Printf("[Endless SDK] It is recommended that private keys are AIP-80 compliant. You can fix the private key by formatting it with crypto.FormatPrivateKey")
